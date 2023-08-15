@@ -11,6 +11,9 @@ async function getPermutation3Data() {
 	await pullData(requestUrl(GameNo, 1), data =>
 		extractData(data, dataSource, GameNo)
 	);
+
+	console.log('Permutation3Data', dataSource.length);
+
 	saveData(dataSource, 'permutation3');
 }
 

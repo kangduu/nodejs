@@ -29,7 +29,7 @@ const jsonParser = bodyParser.json();
 app.post('/api/permutation/3/list', jsonParser, function (req, res) {
 	const { page, pagesize } = req.body;
 	fs.readFile(
-		'../permutation3/data-source.json',
+		'../lottery/src/data/permutation3.json',
 		'utf-8',
 		function (err, value) {
 			try {

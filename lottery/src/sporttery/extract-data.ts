@@ -10,7 +10,7 @@ type ExtractDataFn = (
 
 const extractData: ExtractDataFn = (data, store, type) => {
 	if (!data?.value || !data?.success) return false;
-	const { pageNum, pageNo, list } = data?.value;
+	const { pages, pageNo, list } = data?.value;
 	list.forEach((element: any) => {
 		store.push({
 			result: element.lotteryDrawResult,
@@ -20,7 +20,7 @@ const extractData: ExtractDataFn = (data, store, type) => {
 	console.log(`${type} current:`, pageNo);
 	return {
 		newUrl: requestUrl(type, pageNo + 1),
-		end: pageNum === pageNo,
+		end: pages === pageNo,
 	};
 };
 
