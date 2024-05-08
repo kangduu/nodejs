@@ -8,6 +8,9 @@ function service() {
 }
 
 async function request() {
+	// await service();
+	// 如果你这样做，将会报错哦。
+
 	try {
 		await service();
 		// .catch(() => {});
