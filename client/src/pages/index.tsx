@@ -114,6 +114,14 @@ export default function IndexPage() {
           },
         }}
         columns={[
+          { width: 80, title: '期号', key: 'no', dataIndex: 'no' },
+          {
+            title: '开奖日期',
+            dataIndex: 'date',
+            key: 'date',
+            width: 100,
+            align: 'right',
+          },
           {
             title: '和值',
             dataIndex: 'result',
@@ -129,13 +137,6 @@ export default function IndexPage() {
           },
           // { title: '众数', key: 'mode', dataIndex: 'mode' },
           {
-            title: '开奖日期',
-            dataIndex: 'date',
-            key: 'date',
-            width: 100,
-            align: 'right',
-          },
-          {
             width: 80,
             title: '开奖号码',
             dataIndex: 'result',
@@ -148,7 +149,9 @@ export default function IndexPage() {
           // { title: '最小值', key: 'min', dataIndex: 'min' },
           // { title: '最大值', key: 'max', dataIndex: 'max' },
         ]}
-      />
+      >
+        {/* <Table.Column title="期号" dataIndex="no"></Table.Column> */}
+      </Table>
       <Charts selected={selected} />
     </main>
   );

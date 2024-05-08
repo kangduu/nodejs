@@ -7,6 +7,9 @@ export interface ChartsProps {
   selected: DataRecordType;
 }
 const Charts: FC<ChartsProps> = ({ selected }) => {
+
+  console.log(selected);
+
   const values = selected?.result?.split(/\s/).map((item) => Number(item));
   return (
     <div className={styles.charts}>

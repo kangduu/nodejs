@@ -15,6 +15,7 @@ const extractData: ExtractDataFn = (data, store, type) => {
 		store.push({
 			result: element.lotteryDrawResult,
 			date: element.lotteryDrawTime,
+			no: Number(element.lotteryDrawNum),
 		});
 	});
 	console.log(`${type} current:`, pageNo);

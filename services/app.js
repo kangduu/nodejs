@@ -57,4 +57,30 @@ app.post('/api/permutation/3/list', jsonParser, function (req, res) {
 	);
 });
 
+app.post('/api/permutation/3/find', jsonParser, function (req, res) {
+	const { num } = req.body;
+	fs.readFile(
+		'../lottery/src/data/permutation3.json',
+		'utf-8',
+		function (err, value) {
+			try {
+				if (err) throw Error(err);
+				const data = JSON.parse(value);
+
+				const resData =
+					(num && data?.find(item => item.lotteryDrawNum === num.toString())) ||
+					null;
+
+				res.status(200).json({
+					code: 200,
+					data: resData,
+				});
+			} catch (error) {
+				console.log(error.message);
+				res.status(500).json({ code: 400, msg: error.message });
+			}
+		}
+	);
+});
+
 app.listen(3000, () => console.log(`Server running at port 3000`));
