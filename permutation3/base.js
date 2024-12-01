@@ -5,7 +5,7 @@ const T3 = [],
 const Origin = [];
 
 new Array(1000).fill(null).forEach((_, index) => {
-  const value = index.toString().padStart(3, 0).split("");
+  const value = index.toString().padStart(3, 0);
   Origin.push(value);
 
   const single = new Set(value);
@@ -19,4 +19,12 @@ new Array(1000).fill(null).forEach((_, index) => {
   return;
 });
 
-// 三数相同
+// console.log(T3,T2,T0);
+
+
+module.exports = {
+  WinningNo: Origin,
+  T3,
+  T2,
+  T0,
+};
