@@ -23,7 +23,7 @@ new Array(1000).fill(null).forEach((_, index) => {
 
 
 module.exports = {
-  WinningNo: Origin,
+  WinningNumber: Origin,
   T3,
   T2,
   T0,

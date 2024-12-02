@@ -7,7 +7,7 @@ async function Statistic() {
   const getCountSort = (target) => {
     return target
       .reduce((prev, curr) => {
-        prev.push({ count: counter[curr], result: curr });
+        prev.push({ count: counter[curr] || 0, result: curr });
         return prev;
       }, [])
       .sort((a, b) => a.count - b.count);
@@ -20,6 +20,17 @@ async function Statistic() {
   return { t3Statistic, t2Statistic, t0Statistic };
 }
 
-Statistic().then((data) => {
-  console.log(data);
+Statistic().then(({ t3Statistic, t2Statistic, t0Statistic }) => {
+  // 找出出现次数最少的
+
+  console.log(
+    [...t3Statistic, ...t2Statistic, ...t0Statistic].sort(
+      (a, b) => a.count - b.count
+    )
+  );
+
+  // 最少次数确认
+  // const Frequency = Array.from(new Set(t0Statistic.map(({ count }) => count)));
+  // const MinFrequency = Math.min(Frequency);
+  // console.log(Frequency);
 });

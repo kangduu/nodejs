@@ -8,7 +8,7 @@ function analysis(source) {
     // 和值
     sum = a + b + c,
     // 平均值
-    average = sum / 3,
+    average = Number((sum / 3).toFixed(3)),
     // 最大值
     max = sortBy[2],
     // 最小值
@@ -64,7 +64,7 @@ function fetch(page, resolve, reject) {
         const { pages, pageNo, list } = JSON.parse(html).value;
         list.forEach((element) => {
           data.push({
-            result: element.lotteryDrawResult,
+            result: element.lotteryDrawResult.replaceAll(" ", ""),
             date: element.lotteryDrawTime,
             ...analysis(element.lotteryDrawResult),
             ...splitDate(element.lotteryDrawTime),
@@ -76,10 +76,10 @@ function fetch(page, resolve, reject) {
         } else {
           const timeout = Math.ceil((Math.random() + 0.5) * 10000);
           // waiting
-          setTimeout(() => {
-            const newPage = page + 1;
-            fetch(newPage, resolve, reject);
-          }, timeout);
+          // setTimeout(() => {
+          //   const newPage = page + 1;
+          //   fetch(newPage, resolve, reject);
+          // }, timeout);
         }
       });
     })
