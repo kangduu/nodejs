@@ -1,5 +1,6 @@
 const colors = require("colors-console");
 const fs = require("fs");
+const setFilePath = require("./set-path");
 
 /**
  * 异步读文件
@@ -30,9 +31,12 @@ function readLocalFileSync(filePath) {
   try {
     return fs.readFileSync(filePath, "utf8");
   } catch (error) {
-    console.log(colors("red", "File read failure!"));
+    console.log(colors("red", "File does not exist!"));
     return null;
   }
 }
+
+const data = readLocalFileSync(setFilePath("./", "data.json"));
+console.log(JSON.parse(data).length);
 
 module.exports = { readLocalFile, readLocalFileSync };
