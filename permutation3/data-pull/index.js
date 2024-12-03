@@ -102,10 +102,22 @@ function pullLatestData() {
             latest.push(curr);
           } else break;
         }
-        local.unshift(...latest);
+        
         const LatestLength = latest.length;
         console.log(colors("blue", `${LatestLength} data has been updated.`));
-        LatestLength > 0 && writeDataJson([latest, ...local]);
+
+        if (LatestLength > 0) {
+          // write data
+          local.unshift(...latest);
+          writeDataJson(local);
+
+          // update cache
+          writeLocalFile(
+            JSON.stringify(local),
+            setFilePath("../cache/", "data.json")
+          );
+          console.log(colors("blue", `Cache data has been updated.`));
+        }
       } catch (error) {
         console.log(colors("red", "Pull Latest-Data Error!"));
         console.log(colors("red", error));
