@@ -1,16 +1,9 @@
-const pullOnePageData = require("./pull");
-const { readLocalFileSync } = require("../file/read-file");
-const setFilePath = require("../file/set-path");
-const writeLocalFile = require("../file/write-file");
 const colors = require("colors-console");
 
-function readDataJson() {
-  let local = readLocalFileSync(setFilePath("../file/", "data.json"));
-  if (local) local = JSON.parse(local);
-  else local = [];
-
-  return local;
-}
+const pullOnePageData = require("./pull");
+const setFilePath = require("../file/set-path");
+const writeLocalFile = require("../file/write-file");
+const readJSONDataSource = require("../utils/readBaseData");
 
 function writeDataJson(data) {
   return writeLocalFile(
@@ -38,7 +31,7 @@ async function pullAllData() {
     return new Promise(async (resolve) => {
       if (Array.isArray(data) && data.length > 0) {
         // 读取文件
-        const local = readDataJson();
+        const local = readJSONDataSource();
 
         // insert
         local.push(...data);
@@ -90,7 +83,7 @@ function pullLatestData() {
   pullOnePageData(1)
     .then((data) => {
       try {
-        const local = readDataJson();
+        const local = readJSONDataSource();
         const list = filterResponseData(data.list);
         // 更新多个新数据
         const latest = [];
@@ -102,7 +95,7 @@ function pullLatestData() {
             latest.push(curr);
           } else break;
         }
-        
+
         const LatestLength = latest.length;
         console.log(colors("blue", `${LatestLength} data has been updated.`));
 
