@@ -1,6 +1,5 @@
 const colors = require("colors-console");
 const fs = require("fs");
-const setFilePath = require("./set-path");
 
 /**
  * 异步读文件
@@ -27,7 +26,6 @@ function readLocalFile(filePath) {
  * @param {*} filePath 读取文件的路径
  */
 function readLocalFileSync(filePath) {
-  console.log(colors("grey", filePath));
   try {
     return fs.readFileSync(filePath, "utf8");
   } catch (error) {
@@ -35,8 +33,5 @@ function readLocalFileSync(filePath) {
     return null;
   }
 }
-
-const data = readLocalFileSync(setFilePath("./", "data.json"));
-console.log(JSON.parse(data).length);
 
 module.exports = { readLocalFile, readLocalFileSync };

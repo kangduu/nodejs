@@ -4,12 +4,26 @@ const setFilePath = require("../file/set-path");
 const writeLocalFile = require("../file/write-file");
 const colors = require("colors-console");
 
-// 处理json数据错误问题
-function parseJSONData(data) {
+function readDataJson() {
+  let local = readLocalFileSync(setFilePath("../file/", "data.json"));
+  if (local) local = JSON.parse(local);
+  else local = [];
+
+  return local;
+}
+
+function writeDataJson(data) {
+  return writeLocalFile(
+    JSON.stringify(data),
+    setFilePath("../file/", "data.json")
+  );
+}
+
+function filterResponseData(list) {
   try {
-    return JSON.parse(data);
+    return list.map(({ prizeLevelList /* remove */, ...rest }) => rest);
   } catch (error) {
-    return null;
+    return list;
   }
 }
 
@@ -17,36 +31,47 @@ function parseJSONData(data) {
  * 拉取全部数据
  */
 async function pullAllData() {
-  const result = [];
+  // 清空文件中的数据
+  writeDataJson([]);
+
+  function appendDataInFile(data) {
+    return new Promise(async (resolve) => {
+      if (Array.isArray(data) && data.length > 0) {
+        // 读取文件
+        const local = readDataJson();
+
+        // insert
+        local.push(...data);
+
+        // 写入文件
+        await writeDataJson(local);
+
+        resolve(true);
+      }
+    });
+  }
 
   async function pullData(page) {
     return new Promise((resolve, reject) => {
       pullOnePageData(page)
         .then(async (data /* object type */) => {
           try {
-            // todo 别拦截时的数据类型
-            // const jsonData = parseJSONData(data);
-            // if (!jsonData) return resolve([]);
-
             const { pages, pageNo, list } = data;
 
-            // todo handle data
-
-            // push data
-            result.push(...list);
+            // handle data then append.
+            appendDataInFile(filterResponseData(list));
 
             // pull completed.
-            if (pages === pageNo) resolve(result);
+            if (pages === pageNo) resolve("ending");
             // pull next page data.
             else {
-              const timeout = Math.ceil((Math.random() + 0.5) * 10 * 1000);
+              const timeout = Math.ceil((Math.random() + 0.5) * 30 * 1000);
               // waiting
-              setTimeout(() => {
-                const newPage = pageNo + 1;
-                pullData(newPage);
-              }, timeout);
+              setTimeout(() => pullData(pageNo + 1), timeout);
             }
-          } catch (error) {}
+          } catch (error) {
+            reject(error);
+          }
         })
         .catch((error) => {
           console.log(colors("red", "Pull All-Data Error!"));
@@ -55,18 +80,7 @@ async function pullAllData() {
         });
     });
   }
-
-  try {
-    await pullData(1);
-    writeLocalFile(
-      JSON.stringify(result),
-      setFilePath("../file/", "data.json")
-    );
-    return result;
-  } catch (error) {
-    console.log(colors("red", error));
-    return null;
-  }
+  pullData(1);
 }
 
 /**
@@ -76,32 +90,22 @@ function pullLatestData() {
   pullOnePageData(1)
     .then((data) => {
       try {
-        // const jsonData = parseJSONData(data);
-        // if (!jsonData) {
-        //   console.log(
-        //     colors("red", "Pull Latest-Data response data does not json data!")
-        //   );
-        //   return;
-        // }
-
-        let local = readLocalFileSync(setFilePath("../file/", "data.json"));
-        if (local) local = JSON.parse(local);
-        else local = [];
-
-        const { list, ...rest } = data;
-        const latest = list[0];
-
-        if (
-          local.some((item) => item.lotteryDrawTime === latest.lotteryDrawTime)
-        ) {
-          console.log(colors("blue", "Already exist."));
-          return;
+        const local = readDataJson();
+        const list = filterResponseData(data.list);
+        // 更新多个新数据
+        const latest = [];
+        for (let i = 0; i < list.length; i++) {
+          const curr = list[i];
+          if (
+            !local.some((item) => item.lotteryDrawTime === curr.lotteryDrawTime)
+          ) {
+            latest.push(curr);
+          } else break;
         }
-
-        writeLocalFile(
-          JSON.stringify([data.list[0], ...local]),
-          setFilePath("../file/", "data.json")
-        );
+        local.unshift(...latest);
+        const LatestLength = latest.length;
+        console.log(colors("blue", `${LatestLength} data has been updated.`));
+        LatestLength > 0 && writeDataJson([latest, ...local]);
       } catch (error) {
         console.log(colors("red", "Pull Latest-Data Error!"));
         console.log(colors("red", error));
