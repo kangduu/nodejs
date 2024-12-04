@@ -3,7 +3,7 @@ const colors = require("colors-console");
 const pullOnePageData = require("./pull");
 const setFilePath = require("../file/set-path");
 const writeLocalFile = require("../file/write-file");
-const readJSONDataSource = require("../utils/readBaseData");
+const readJSONDataSource = require("../utils/readJSONDataSource");
 
 function writeDataJson(data) {
   return writeLocalFile(
