@@ -1,9 +1,4 @@
-const {
-  getAllResultFrequency,
-  T3Frequency,
-  T2Frequency,
-  T0Frequency,
-} = require("./frequency");
+const { getAllResultFrequency } = require("./frequency");
 
 /**
  * 次数统计
@@ -22,6 +17,11 @@ function getFrequencyList() {
   return Array.from(list);
 }
 
+/**
+ * 获取出现指定次数的结果
+ * @param {*} frequency 出现次数
+ * @returns
+ */
 function getCountNumber(frequency = 1) {
   const data = getAllResultFrequency();
   const result = [];
@@ -34,5 +34,7 @@ function getCountNumber(frequency = 1) {
   return result;
 }
 
-// const frequency = getFrequencyList();
-// console.log(getCountNumber(Math.max(...frequency)));
+module.exports = {
+  getCountNumber,
+  getFrequencyList,
+};
