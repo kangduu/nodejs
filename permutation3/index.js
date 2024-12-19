@@ -15,7 +15,7 @@ const {
 const frequency = getFrequencyList();
 // console.log(frequency.sort((a, b) => b - a));
 
-// console.log(getCountNumber(8));
+console.log(getCountNumber(0));
 
 // console.log(T3Frequency.reverse());
 // console.log(T2Frequency.reverse());
