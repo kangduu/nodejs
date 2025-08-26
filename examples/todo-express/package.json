@@ -1,15 +1,15 @@
 {
-  "name": "express",
+  "name": "todo-express",
   "version": "1.0.0",
-  "description": "",
-  "main": "app.js",
+  "main": "services.js",
   "scripts": {
-    "start": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "duk",
+  "keywords": [],
+  "author": "",
   "license": "ISC",
+  "description": "",
   "dependencies": {
-    "mockjs": "^1.1.0"
+    "express": "^5.1.0"
   }
 }
